@@ -34,3 +34,9 @@ usuarioSchema.pre('save', async function (next) {
     next(error);
   }
 });
+// ✅ Método para comparar contraseñas
+usuarioSchema.methods.compararContraseña = function (contraseñaIngresada) {
+  return bcrypt.compare(contraseñaIngresada, this.contraseña);
+};
+
+module.exports = mongoose.model('Usuario', usuarioSchema);
