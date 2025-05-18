@@ -9,3 +9,9 @@ router.post("/mascota", (req, res) => {
         .then((data) => res.json(data))
         .catch((error) => res.json({ message: error }));
 });
+//Consultar todos los animales
+router.get("/mascota", (req, res) => {
+    mascotaSchema.find()
+        .then((data) => res.json(data))
+        .catch((error) => res.json({ message: error }));
+});
