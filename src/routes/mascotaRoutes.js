@@ -15,3 +15,25 @@ router.get("/mascota", (req, res) => {
         .then((data) => res.json(data))
         .catch((error) => res.json({ message: error }));
 });
+router.put("/mascotas/:id", (req, res) => {
+  const { id } = req.params;
+  const { nombre, tipo, bienestar } = req.body;
+
+  Mascota
+    .updateOne({ _id: id }, {
+      $set: { nombre, tipo, bienestar }
+    })
+    .then((data) => res.json(data))
+    .catch((error) => res.status(500).json({ message: error.message }));
+});
+
+router.delete("/mascotas/:id", (req, res) => {
+  const { id } = req.params;
+
+  Mascota
+    .findByIdAndDelete(id)
+    .then((data) => res.json(data))
+    .catch((error) => res.status(500).json({ message: error.message }));
+});
+
+module.exports = router;
