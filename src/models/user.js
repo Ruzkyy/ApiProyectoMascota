@@ -1,3 +1,4 @@
+//models/user.js
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 
@@ -23,18 +24,14 @@ const usuarioSchema = new mongoose.Schema({
   }
 });
 
-// 🔒 Hash automático de la contraseña antes de guardar
-usuarioSchema.pre('save', async function (next) {
-  if (!this.isModified('contraseña')) return next();
-  try {
-    const salt = await bcrypt.genSalt(10);
-    this.contraseña = await bcrypt.hash(this.contraseña, salt);
-    next();
-  } catch (error) {
-    next(error);
-  }
-});
-// ✅ Método para comparar contraseñas
+
+usuarioSchema.methods.encryptContraseña = async (clave) => {
+  const salt = await bcrypt.genSalt(10);
+  return bcrypt.hash(clave, salt);
+}
+
+
+// Método para comparar contraseñas
 usuarioSchema.methods.compararContraseña = function (contraseñaIngresada) {
   return bcrypt.compare(contraseñaIngresada, this.contraseña);
 };
